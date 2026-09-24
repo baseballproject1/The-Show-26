@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Road to the Majors</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <div class="brand">⚾ ROAD TO THE MAJORS</div>
+      <div id="status"></div>
+    </header>
+
+    <main>
+      <section id="home" class="screen active">
+        <div class="hero card">
+          <div>
+            <p class="eyebrow">ORIGINAL RTTS-STYLE BASEBALL GAME</p>
+            <h1>Road to the Majors</h1>
+            <p>마이너리그에서 시작해 메이저리그까지 올라가는 1인 선수 커리어.</p>
+          </div>
+          <div class="home-actions">
+            <button id="newCareerBtn" class="primary">새 커리어</button>
+            <button id="continueBtn">이어하기</button>
+          </div>
+        </div>
+        <div class="grid2">
+          <div class="card"><h3>직접 플레이</h3><p>타격 존 조준, 직접 스윙, 주루 조이스틱, 수비 이동·송구 조준, 투구 코스 조준.</p></div>
+          <div class="card"><h3>ABS 판독</h3><p>기본 2회. 번복이면 횟수 유지, 판정 유지면 1회 차감.</p></div>
+        </div>
+      </section>
+
+      <section id="create" class="screen">
+        <div class="card form-card">
+          <h2>선수 만들기</h2>
+          <div class="form-grid">
+            <label>이름<input id="playerName" maxlength="18" value="Rookie"></label>
+            <label>등번호<input id="playerNumber" type="number" min="0" max="99" value="7"></label>
+            <label>포지션
+              <select id="position">
+                <option>CF</option><option>SS</option><option>2B</option><option>3B</option>
+                <option>1B</option><option>LF</option><option>RF</option><option>C</option><option>DH</option>
+              </select>
+            </label>
+            <label>타격<input id="batHand" type="text" value="R" maxlength="1"></label>
+            <label>투구<input id="throwHand" type="text" value="R" maxlength="1"></label>
+          </div>
+          <h3>시작 토큰: <span id="tokenCount">250</span></h3>
+          <p class="muted">컨택 / 파워 / 클러치 / 주루 / 수비에 자유롭게 배분하세요. 1토큰 = 능력치 +1.</p>
+          <div id="statAllocator"></div>
+          <button id="createPlayerBtn" class="primary wide">커리어 시작</button>
+        </div>
+      </section>
+
+      <section id="dashboard" class="screen">
+        <div class="dash-head card">
+          <div>
+            <p class="eyebrow" id="careerLevel"></p>
+            <h2 id="dashName"></h2>
+            <p id="dashTeam"></p>
+          </div>
+          <div class="ovr" id="dashOvr">OVR 0</div>
+        </div>
+
+        <nav class="tabs">
+          <button data-tab="careerTab" class="tab active">커리어</button>
+          <button data-tab="equipmentTab" class="tab">장비</button>
+          <button data-tab="trainingTab" class="tab">훈련</button>
+          <button data-tab="seasonTab" class="tab">시즌</button>
+          <button data-tab="saveTab" class="tab">저장</button>
+        </nav>
+
+        <div id="careerTab" class="tabpage active">
+          <div class="grid2">
+            <div class="card"><h3>능력치</h3><div id="statsBox"></div></div>
+            <div class="card"><h3>다음 목표</h3><div id="goalBox"></div></div>
+          </div>
+          <div class="card">
+            <h3>다음 경기</h3>
+            <div id="nextGameBox"></div>
+            <button id="playGameBtn" class="primary">경기 시작</button>
+          </div>
+        </div>
+
+        <div id="equipmentTab" class="tabpage">
+          <div class="card">
+            <h3>장비</h3>
+            <p>연봉으로 장비 뽑기를 진행합니다.</p>
+            <div id="equipmentBox"></div>
+            <div class="draw-row"><button id="drawEquipmentBtn" class="primary">장비 1회 뽑기</button><span id="salaryBox"></span></div>
+            <div id="drawResult"></div>
+          </div>
+        </div>
+
+        <div id="trainingTab" class="tabpage">
+          <div class="card">
+            <h3>훈련</h3>
+            <p>훈련 성공 시 토큰을 1개 얻고 원하는 능력치에 직접 투자합니다.</p>
+            <button id="trainBtn" class="primary">훈련 시작</button>
+            <div id="trainingResult"></div>
+          </div>
+        </div>
+
+        <div id="seasonTab" class="tabpage">
+          <div class="card">
+            <h3>시즌 / 계약</h3>
+            <div id="seasonBox"></div>
+            <button id="negotiateBtn" class="primary">시즌 종료 · 연봉협상</button>
+            <div id="offers"></div>
+          </div>
+        </div>
+
+        <div id="saveTab" class="tabpage">
+          <div class="card">
+            <h3>저장 슬롯</h3>
+            <div class="save-grid">
+              <button data-save="0">슬롯 1 저장</button><button data-load="0">슬롯 1 불러오기</button>
+              <button data-save="1">슬롯 2 저장</button><button data-load="1">슬롯 2 불러오기</button>
+              <button data-save="2">슬롯 3 저장</button><button data-load="2">슬롯 3 불러오기</button>
+            </div>
+            <p id="saveMessage"></p>
+          </div>
+        </div>
+      </section>
+
+      <section id="game" class="screen">
+        <div class="game-top">
+          <button id="backCareerBtn">← 커리어</button>
+          <div id="gameSituation"></div>
+          <div id="absCounter">ABS 2/2</div>
+        </div>
+
+        <div id="battingMode" class="game-mode">
+          <canvas id="batCanvas" width="900" height="560"></canvas>
+          <div class="control-help">존 조준: WASD / 왼쪽 스틱 · 스윙: SPACE 또는 오른쪽 버튼 · ABS: A</div>
+          <div class="mobile-controls">
+            <div class="joystick" id="batJoy"><div class="stick"></div></div>
+            <button id="swingBtn" class="action-btn">SWING</button>
+            <button id="absBtn" class="small-action">ABS</button>
+          </div>
+        </div>
+
+        <div id="runnerMode" class="game-mode hidden">
+          <canvas id="runnerCanvas" width="900" height="560"></canvas>
+          <div class="control-help">주루: 왼쪽 스틱 / WASD · 스프린트: 오른쪽 버튼</div>
+          <div class="mobile-controls">
+            <div class="joystick" id="runJoy"><div class="stick"></div></div>
+            <button id="runBtn" class="action-btn">RUN</button>
+          </div>
+        </div>
+
+        <div id="fieldMode" class="game-mode hidden">
+          <canvas id="fieldCanvas" width="900" height="560"></canvas>
+          <div class="control-help">수비 이동: 왼쪽 스틱 / WASD · 송구 조준: 마우스/터치 · THROW</div>
+          <div class="mobile-controls">
+            <div class="joystick" id="fieldJoy"><div class="stick"></div></div>
+            <button id="throwBtn" class="action-btn">THROW</button>
+          </div>
+        </div>
+
+        <div id="pitchMode" class="game-mode hidden">
+          <canvas id="pitchCanvas" width="900" height="560"></canvas>
+          <div class="pitch-controls">
+            <button data-pitch="FASTBALL">직구</button>
+            <button data-pitch="SLIDER">슬라이더</button>
+            <button data-pitch="CHANGEUP">체인지업</button>
+            <button data-pitch="CURVE">커브</button>
+          </div>
+          <div class="control-help">코스: 마우스/터치 또는 WASD · PITCH</div>
+          <button id="pitchBtn" class="action-btn">PITCH</button>
+        </div>
+
+        <div id="gameMessage" class="game-message"></div>
+      </section>
+    </main>
+  </div>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
