@@ -1,4 +1,4 @@
-# Road to the Majors
+# The Show26
 
 Original browser RTTS-style baseball game.
 
